@@ -1,16 +1,12 @@
 package com.example.semesterprojectiss;
 
 import domain.Admin;
-import domain.User;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import service.AdminService;
-import service.GameService;
-import service.UserService;
+import service.*;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -29,16 +25,22 @@ public class LoginAdminController {
     private UserService userService;
     private GameService gameService;
     private AdminService adminService;
+    private WishService wishService;
+    private CartService cartService;
+    private OwnedGamesService ownedGamesService;
 
 
-    public void setService(UserService userService, GameService gameService, AdminService adminService) {
+    public void setService(UserService userService, GameService gameService, AdminService adminService, WishService wishService, CartService cartService, OwnedGamesService ownedGamesService) {
         this.gameService = gameService;
         this.adminService = adminService;
         this.userService = userService;
+        this.wishService = wishService;
+        this.cartService = cartService;
+        this.ownedGamesService = ownedGamesService;
         LabelError.setVisible(false);
     }
 
-    public void login(ActionEvent event) {
+    public void login() {
         String username = TextFieldUsername.getText();
         String password;
         if (CheckBoxShowPassword.isSelected()) {
@@ -73,7 +75,7 @@ public class LoginAdminController {
                                 Platform.runLater(() -> {
                                     try {
 
-                                        AdminWindow adminWindow = new AdminWindow(foundAdmin.getId(), userService, gameService, adminService);
+                                        AdminWindow adminWindow = new AdminWindow(foundAdmin.getId(), userService, gameService, adminService, wishService, cartService, ownedGamesService);
                                         Stage stage = new Stage();
                                         adminWindow.start(stage);
                                         Stage thisStage = (Stage) ButtonLogin.getScene().getWindow();
@@ -101,17 +103,11 @@ public class LoginAdminController {
         }
     }
 
-    public void CheckedAction(ActionEvent event) {
-        if (CheckBoxShowPassword.isSelected()) {
-            TextFieldPassword.setVisible(true);
-            TextFieldPassword.setText(PasswordField.getText());
-            PasswordField.setVisible(false);
-        } else {
-            PasswordField.setVisible(true);
-            PasswordField.setText(TextFieldPassword.getText());
-            TextFieldPassword.setVisible(false);
-        }
+    public void CheckedAction() {
+        ControllerMethods.passwordCheckBox(CheckBoxShowPassword, TextFieldPassword, PasswordField);
     }
+
+
 
     public void openUserLoginWindow() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -129,7 +125,7 @@ public class LoginAdminController {
                         final CountDownLatch latch = new CountDownLatch(1);
                         Platform.runLater(() -> {
                             try {
-                                LoginWindow loginWindow = new LoginWindow(userService, gameService, adminService);
+                                LoginWindow loginWindow = new LoginWindow(userService, gameService, adminService, wishService, cartService, ownedGamesService);
                                 Stage stage = new Stage();
                                 loginWindow.start(stage);
                                 Stage thisStage = (Stage) HyperlinkUserLogin.getScene().getWindow();

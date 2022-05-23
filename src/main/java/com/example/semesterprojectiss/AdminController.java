@@ -1,18 +1,21 @@
 package com.example.semesterprojectiss;
 
+import domain.Game;
+import domain.GameUIAdminPage;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import service.AdminService;
-import service.GameService;
-import service.UserService;
+import service.*;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
 
 public class AdminController {
@@ -20,18 +23,42 @@ public class AdminController {
     public Label LabelUsername;
     public Button ButtonLogOut;
     public Label LabelName;
+    public Button ButtonRemoveGame;
+    public Button ButtonAddGame;
+    public TextField TextFieldName;
+    public TextField TextFieldPrice;
+    public TextField TextFieldID;
+
+    public TableView<GameUIAdminPage> TableViewGames;
+    public TableColumn<GameUIAdminPage, Integer> TableColumnId;
+    public TableColumn<GameUIAdminPage, String> TableColumnName;
+    public TableColumn<GameUIAdminPage, Float> TableColumnPrice;
+    public Button ButtonUpdateGame;
+
     private Integer adminID;
     private UserService userService;
     private GameService gameService;
     private AdminService adminService;
+    private WishService wishService;
+    private CartService cartService;
+    private OwnedGamesService ownedGamesService;
 
-    public void setService(Integer adminID, UserService userService, GameService gameService, AdminService adminService) {
+    ObservableList<Game> games = FXCollections.observableArrayList();
+    ObservableList<GameUIAdminPage> gamesUIAdminPage = FXCollections.observableArrayList();
+
+    public void setService(Integer adminID, UserService userService, GameService gameService, AdminService adminService, WishService wishService, CartService cartService, OwnedGamesService ownedGamesService) {
         this.adminID = adminID;
         this.userService = userService;
         this.gameService = gameService;
         this.adminService = adminService;
+        this.wishService = wishService;
+        this.cartService = cartService;
+        this.ownedGamesService = ownedGamesService;
         LabelUsername.setText(userService.findOne(this.adminID).getUsername());
         LabelName.setText(userService.findOne(this.adminID).getName());
+
+        TableViewGames.setItems(gamesUIAdminPage);
+        resetTable();
     }
 
 
@@ -52,7 +79,7 @@ public class AdminController {
                         final CountDownLatch latch = new CountDownLatch(1);
                         Platform.runLater(() -> {
                             try {
-                                LoginAdminWindow loginAdminWindow = new LoginAdminWindow(userService, gameService, adminService);
+                                LoginAdminWindow loginAdminWindow = new LoginAdminWindow(userService, gameService, adminService, wishService, cartService, ownedGamesService);
                                 Stage stage = new Stage();
                                 loginAdminWindow.start(stage);
                                 Stage thisStage = (Stage) ButtonLogOut.getScene().getWindow();
@@ -75,8 +102,33 @@ public class AdminController {
 
     @FXML
     public void initialize(){
-
+        TableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        TableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumnPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
 
+    public void RemoveGame() {
+        gameService.delete(Integer.valueOf(TextFieldID.getText()));
+        resetTable();
+    }
+
+    private void resetTable() {
+        gamesUIAdminPage.clear();
+        games.setAll((Collection<? extends Game>) gameService.findAll());
+        games.forEach(x -> {
+            GameUIAdminPage game = new GameUIAdminPage(x.getId(), x.getName(), x.getPrice());
+            this.gamesUIAdminPage.add(game);
+        });
+    }
+
+    public void AddGame() {
+        gameService.save(new Game(1, TextFieldName.getText(), Float.valueOf(TextFieldPrice.getText())));
+        resetTable();
+    }
+
+    public void UpdateGame(ActionEvent event) {
+        gameService.update(new Game(Integer.valueOf(TextFieldID.getText()),TextFieldName.getText(), Float.valueOf(TextFieldPrice.getText())));
+        resetTable();
+    }
 }

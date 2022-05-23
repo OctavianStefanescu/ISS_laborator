@@ -10,12 +10,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #393e46;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.semesterprojectiss.UserController">
-    <Pane layoutY="14.0" prefHeight="70.0" prefWidth="500.0" style="-fx-background-color: #454b54;">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #40037c;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.semesterprojectiss.UserController">
+    <Pane layoutY="14.0" prefHeight="70.0" prefWidth="500.0" style="-fx-background-color: #7305e0;">
         <ImageView fitHeight="64.0" fitWidth="64.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" y="1.0">
             <Image url="@../../../images/user128.png" />
         </ImageView>
-        <Label fx:id="LabelUsername" layoutX="64.0" layoutY="4.0" prefHeight="27.0" prefWidth="240.0" text="-" textFill="WHITE">
+        <Label fx:id="LabelUsername" layoutX="64.0" layoutY="4.0" prefHeight="27.0" prefWidth="240.0" style="-fx-border-color: #ffffff;" text="-" textFill="WHITE">
             <font>
                 <Font name="System Italic" size="18.0" />
             </font>
@@ -29,27 +29,14 @@
             </font>
         </Label>
         <Button fx:id="ButtonLogOut" layoutX="348.0" layoutY="16.0" mnemonicParsing="false" onAction="#logOut" opacity="0.0" prefHeight="32.0" prefWidth="145.0" />
-      <Label fx:id="LabelName" layoutX="64.0" layoutY="37.0" prefHeight="27.0" prefWidth="240.0" text="-" textFill="WHITE">
+      <Label fx:id="LabelName" layoutX="64.0" layoutY="37.0" prefHeight="27.0" prefWidth="240.0" style="-fx-border-color: #ffffff;" text="-" textFill="WHITE">
          <font>
             <Font name="System Italic" size="18.0" />
          </font>
       </Label>
     </Pane>
-   <Pane layoutY="92.0" prefHeight="32.0" prefWidth="500.0" style="-fx-background-color: #454b54;">
-      <children>
-         <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="-2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../../images/money_24px.png" />
-            </image>
-         </ImageView>
-         <Label fx:id="LabelCurrency" layoutX="30.0" layoutY="1.0" prefHeight="27.0" prefWidth="240.0" text="-" textFill="WHITE">
-            <font>
-               <Font name="System Italic" size="18.0" />
-            </font>
-         </Label>
-      </children>
-   </Pane>
-   <TableView fx:id="TableViewGames" layoutY="124.0" prefHeight="400.0" prefWidth="500.0">
+   <Pane layoutY="92.0" prefHeight="32.0" prefWidth="500.0" style="-fx-background-color: #7305e0;" />
+   <TableView fx:id="TableViewGames" layoutY="124.0" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #7305e0;">
      <columns>
        <TableColumn fx:id="TableColumnId" prefWidth="50.0" text="ID" />
        <TableColumn fx:id="TableColumnName" prefWidth="225.0" text="NAME" />
@@ -58,16 +45,16 @@
          <TableColumn fx:id="TableColumnWishlist" prefWidth="75.0" text="WISHLIST" />
      </columns>
    </TableView>
-   <Button layoutY="524.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="166.66" style="-fx-background-color: #454b54;">
+   <Button fx:id="ButtonCart" layoutY="524.0" mnemonicParsing="false" onAction="#OpenCart" prefHeight="70.0" prefWidth="166.66" style="-fx-background-color: #7305e0; -fx-border-color: #ffffff;">
       <graphic>
          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
             <image>
-               <Image url="@../../../images/shopping_cart_32px.png" />
+               <Image url="@../../../images/shopping_cart_96px.png" />
             </image>
          </ImageView>
       </graphic>
    </Button>
-   <Button layoutX="166.0" layoutY="524.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="166.66" style="-fx-background-color: #454b54;">
+   <Button fx:id="ButtonWishlist" layoutX="166.0" layoutY="524.0" mnemonicParsing="false" onAction="#OpenWishlist" prefHeight="70.0" prefWidth="166.66" style="-fx-background-color: #7305e0; -fx-border-color: #ffffff;">
       <graphic>
          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -76,11 +63,11 @@
          </ImageView>
       </graphic>
    </Button>
-   <Button layoutX="333.0" layoutY="524.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="166.66" style="-fx-background-color: #454b54;">
+   <Button fx:id="ButtonGames" layoutX="333.0" layoutY="524.0" mnemonicParsing="false" onAction="#OpenGames" prefHeight="70.0" prefWidth="166.66" style="-fx-background-color: #7305e0; -fx-border-color: #ffffff;">
       <graphic>
          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
             <image>
-               <Image url="@../../../images/game_controller_26px.png" />
+               <Image url="@../../../images/game_controller_96px.png" />
             </image>
          </ImageView>
       </graphic>

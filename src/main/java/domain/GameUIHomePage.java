@@ -1,20 +1,24 @@
 package domain;
 
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
 
-public class GameUI {
+public class GameUIHomePage {
     private Integer id;
     private String name;
     private Float price;
     private CheckBox cart;
     private CheckBox wishlist;
 
-    public GameUI(Integer id, String name, Float price) {
+    public GameUIHomePage(Integer id, String name, Float price) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.cart = new CheckBox();
         this.wishlist = new CheckBox();
+
+
+
     }
 
     public CheckBox getCart() {

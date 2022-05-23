@@ -1,11 +1,47 @@
 package com.example.semesterprojectiss;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import service.*;
 
 public class UserWishlistWindow extends Application {
-    @Override
-    public void start(Stage primaryStage) throws Exception {
 
+    private final Integer userID;
+    private final UserService userService;
+    private final GameService gameService;
+    private final AdminService adminService;
+    private final WishService wishService;
+    private final CartService cartService;
+    private final OwnedGamesService ownedGamesService;
+
+
+    public UserWishlistWindow(Integer userID, UserService userService, GameService gameService, AdminService adminService, WishService wishService, CartService cartService, OwnedGamesService ownedGamesService) {
+        this.userID = userID;
+        this.userService = userService;
+        this.gameService = gameService;
+        this.adminService = adminService;
+        this.wishService = wishService;
+        this.cartService = cartService;
+        this.ownedGamesService = ownedGamesService;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getResource("user-wishlist-view.fxml"));
+        AnchorPane root=loader.load();
+
+        UserWishlistController userWishlistController = loader.getController();
+        userWishlistController.setService(userID, userService, gameService, adminService, wishService, cartService, ownedGamesService);
+
+        stage.setScene(new Scene(root, 500, 600));
+        stage.setTitle("Chippy games");
+        stage.setResizable(false);
+        stage.getIcons().add(new Image("images/icon2.png"));
+        stage.show();
     }
 }

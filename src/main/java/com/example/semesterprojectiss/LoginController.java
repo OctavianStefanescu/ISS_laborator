@@ -7,9 +7,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import service.AdminService;
-import service.GameService;
-import service.UserService;
+import service.*;
 
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
@@ -28,12 +26,18 @@ public class LoginController {
     private UserService userService;
     private GameService gameService;
     private AdminService adminService;
+    private WishService wishService;
+    private CartService cartService;
+    private OwnedGamesService ownedGamesService;
 
 
-    public void setService(UserService userService, GameService gameService, AdminService adminService) {
+    public void setService(UserService userService, GameService gameService, AdminService adminService, WishService wishService, CartService cartService, OwnedGamesService ownedGamesService) {
         this.userService = userService;
         this.gameService = gameService;
         this.adminService = adminService;
+        this.wishService = wishService;
+        this.cartService = cartService;
+        this.ownedGamesService = ownedGamesService;
         LabelError.setVisible(false);
     }
 
@@ -72,7 +76,7 @@ public class LoginController {
                                 Platform.runLater(() -> {
                                     try {
 
-                                        UserWindow mainPageWindow = new UserWindow(foundUser.getId(), userService, gameService, adminService);
+                                        UserWindow mainPageWindow = new UserWindow(foundUser.getId(), userService, gameService, adminService, wishService, cartService, ownedGamesService);
                                         Stage stage = new Stage();
                                         mainPageWindow.start(stage);
                                         Stage thisStage = (Stage) ButtonLogin.getScene().getWindow();
@@ -116,7 +120,7 @@ public class LoginController {
                         final CountDownLatch latch = new CountDownLatch(1);
                         Platform.runLater(() -> {
                             try {
-                                SignUpWindow signUpWindow = new SignUpWindow(userService, gameService, adminService);
+                                SignUpWindow signUpWindow = new SignUpWindow(userService, gameService, adminService, wishService, cartService, ownedGamesService);
                                 Stage stage = new Stage();
                                 signUpWindow.start(stage);
                                 Stage thisStage = (Stage) ButtonLogin.getScene().getWindow();
@@ -143,15 +147,7 @@ public class LoginController {
     }
 
     public void CheckedAction() {
-        if (CheckBoxShowPassword.isSelected()) {
-            TextFieldPassword.setVisible(true);
-            TextFieldPassword.setText(PasswordField.getText());
-            PasswordField.setVisible(false);
-        } else {
-            PasswordField.setVisible(true);
-            PasswordField.setText(TextFieldPassword.getText());
-            TextFieldPassword.setVisible(false);
-        }
+        ControllerMethods.passwordCheckBox(CheckBoxShowPassword, TextFieldPassword, PasswordField);
     }
 
     public void openAdminLoginWindow() {
@@ -170,7 +166,7 @@ public class LoginController {
                         final CountDownLatch latch = new CountDownLatch(1);
                         Platform.runLater(() -> {
                             try {
-                                LoginAdminWindow loginAdminWindow = new LoginAdminWindow(userService, gameService, adminService);
+                                LoginAdminWindow loginAdminWindow = new LoginAdminWindow(userService, gameService, adminService, wishService, cartService, ownedGamesService);
                                 Stage stage = new Stage();
                                 loginAdminWindow.start(stage);
                                 Stage thisStage = (Stage) ButtonLogin.getScene().getWindow();
